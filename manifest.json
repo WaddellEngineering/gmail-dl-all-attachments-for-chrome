@@ -6,12 +6,8 @@
    "default_locale": "en",
    "short_name": "Better download all",
    "icons": {
-      "128": "img/logo_128.png",
-      "16": "img/logo_16.png",
-      "48": "img/logo_48.png"
    },
    "content_scripts": [ {
-      "css": [ "styles.css" ],
       "js": [ "util.js", "app.js" ],
       "matches": [ "https://mail.google.com/*", "https://inbox.google.com/*" ]
    } ],
@@ -21,10 +17,6 @@
       "https://mail-attachment.googleusercontent.com/"
    ],
    "permissions": [ "storage" ],
-   "web_accessible_resources": [{
-      "resources": [ "img/save.png", "img/save_toolbar.png" ],
-      "matches": [ "https://mail.google.com/*", "https://inbox.google.com/*" ]
-   }],
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoPff16UJjTfZuErppkRgvvTgQLnar1zR2KjSwLH7tDOFJEj1laQmvRCHApHuonrXtoBy2jLz77mDJ7sZRSF3te0/Fbvyb88ZM+W0MC6mT82h3bQ82M9cmwJaMm0yNgok5zYpw7/hs94wYP9Uszy1o6ImZpWCr/wtXY4CgYGGD0SY9X4D5QS8DoOAZTlYQPikOrVNxIL56qiE394pHMJBLzGoYmsLjT+MS6Dagn8tLbBHe+OWADTVFyps/ooLzHgW8HTjXwYZEPp0IXD7rop+1t2hFDL7nAmsvE0ts0Snf8tGv011/NEpy2sWflil5Lq0IdsQgdAqQYteZKwJDl/7aQIDAQAB",
    "update_url": "https://clients2.google.com/service/update2/crx"
 }
