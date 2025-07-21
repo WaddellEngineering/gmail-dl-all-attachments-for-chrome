@@ -1,32 +1,30 @@
 {
-
-  "manifest_version": 2,
-  "name": "Better download all attachments for Gmail™",
-  "short_name": "Better download all",
-  "description": "__MSG_description__",
-  "version": "1.1.0",
-  "default_locale": "en",
-  "icons": {
-    "16": "img/logo_16.png",
-    "48": "img/logo_48.png",
-    "128": "img/logo_128.png"
-  },
-  "permissions": [
-    "https://mail.google.com/",
-    "https://inbox.google.com/",
-    "https://mail-attachment.googleusercontent.com/",
-    "https://www.google-analytics.com/",
-    "storage"
-  ],
-  "content_scripts" : [
-    {
-      "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
-      "css": ["styles.css"],
-      "js": ["google-analytics-bundle.js", "inboxsdk.js", "util.js", "app.js"]
-    }
-  ],
-  "web_accessible_resources": [
-    "img/save.png",
-    "img/save_toolbar.png"
-  ]
+   "manifest_version": 3,
+   "name": "Better download all attachments for Gmail™",
+   "version": "1.1.0",
+   "description": "__MSG_description__",
+   "default_locale": "en",
+   "short_name": "Better download all",
+   "icons": {
+      "128": "img/logo_128.png",
+      "16": "img/logo_16.png",
+      "48": "img/logo_48.png"
+   },
+   "content_scripts": [ {
+      "css": [ "styles.css" ],
+      "js": [ "util.js", "app.js" ],
+      "matches": [ "https://mail.google.com/*", "https://inbox.google.com/*" ]
+   } ],
+   "host_permissions": [
+      "https://mail.google.com/",
+      "https://inbox.google.com/",
+      "https://mail-attachment.googleusercontent.com/"
+   ],
+   "permissions": [ "storage" ],
+   "web_accessible_resources": [{
+      "resources": [ "img/save.png", "img/save_toolbar.png" ],
+      "matches": [ "https://mail.google.com/*", "https://inbox.google.com/*" ]
+   }],
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoPff16UJjTfZuErppkRgvvTgQLnar1zR2KjSwLH7tDOFJEj1laQmvRCHApHuonrXtoBy2jLz77mDJ7sZRSF3te0/Fbvyb88ZM+W0MC6mT82h3bQ82M9cmwJaMm0yNgok5zYpw7/hs94wYP9Uszy1o6ImZpWCr/wtXY4CgYGGD0SY9X4D5QS8DoOAZTlYQPikOrVNxIL56qiE394pHMJBLzGoYmsLjT+MS6Dagn8tLbBHe+OWADTVFyps/ooLzHgW8HTjXwYZEPp0IXD7rop+1t2hFDL7nAmsvE0ts0Snf8tGv011/NEpy2sWflil5Lq0IdsQgdAqQYteZKwJDl/7aQIDAQAB",
+   "update_url": "https://clients2.google.com/service/update2/crx"
 }
