@@ -19,7 +19,7 @@ This is a google chrome extension. It permits you to download all files attached
 
 ## About
 
-2025: Updated for Manifest v3 by Sam (https://github.com/WaddellEngineering)
+2025: Updated for Manifest v3 by [Sam](https://github.com/WaddellEngineering)
 
 Developed by [medric](https://github.com/medric) && [mlazzje](https://github.com/mlazzje)
 
