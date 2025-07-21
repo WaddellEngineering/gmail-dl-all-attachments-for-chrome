@@ -1,5 +1,5 @@
 // Gmail Attachment Downloader - Manifest v3 Compatible (No InboxSDK)
-console.log('Gmail Attachment Downloader loading...');
+// console.log('Gmail Attachment Downloader loading...');
 
 // Debounce function to prevent excessive calls
 function debounce(func, wait) {
@@ -54,26 +54,26 @@ function getEmailsInConversation() {
 
 // Function to add download buttons only next to "Add all to Drive" buttons
 function addDownloadButtons() {
-  console.log('🔍 Looking for "Add all to Drive" buttons...');
+  // console.log('🔍 Looking for "Add all to Drive" buttons...');
 
   // Only proceed if we're in a conversation view
   if (!isInConversationView()) {
-    console.log('Not in conversation view, skipping button addition');
+    // console.log('Not in conversation view, skipping button addition');
     return;
   }
 
   // Get all emails in the conversation
   const emails = getEmailsInConversation();
-  console.log(`Found ${emails.length} emails in conversation`);
+  // console.log(`Found ${emails.length} emails in conversation`);
 
   let totalButtonsAdded = 0;
 
   emails.forEach((email, emailIndex) => {
-    console.log(`Processing email ${emailIndex + 1}:`, email);
+    // console.log(`Processing email ${emailIndex + 1}:`, email);
 
     // Look specifically for "Add all to Drive" buttons in this email
     const addToDriveButtons = email.querySelectorAll('[data-tooltip="Add all to Drive"]:not(.download-all-processed)');
-    console.log(`Found ${addToDriveButtons.length} "Add all to Drive" buttons in email ${emailIndex + 1}`);
+    // console.log(`Found ${addToDriveButtons.length} "Add all to Drive" buttons in email ${emailIndex + 1}`);
 
     addToDriveButtons.forEach((driveButton, buttonIndex) => {
       // Mark as processed to avoid duplicate processing
@@ -81,14 +81,14 @@ function addDownloadButtons() {
 
       // Check if we haven't already added a download button near this one
       if (!driveButton.closest('.download-all-parent')) {
-        console.log(`✅ Adding download button next to "Add all to Drive" button ${buttonIndex + 1} in email ${emailIndex + 1}`);
+        // console.log(`✅ Adding download button next to "Add all to Drive" button ${buttonIndex + 1} in email ${emailIndex + 1}`);
         addDownloadAllButton(driveButton, email);
         totalButtonsAdded++;
       }
     });
   });
 
-  console.log(`🎯 Total download buttons added: ${totalButtonsAdded}`);
+  // console.log(`🎯 Total download buttons added: ${totalButtonsAdded}`);
 }// Add download all button next to "Add all to Drive" button
 function addDownloadAllButton(driveButton, emailContainer) {
   // Create a container that wraps both the Drive button and our download button
@@ -102,36 +102,28 @@ function addDownloadAllButton(driveButton, emailContainer) {
   const button = document.createElement('button');
   button.className = 'download-all-btn';
   button.style.cssText = `
-    background: #1a73e8;
-    color: white;
+    background: transparent;
+    color: var(--gm-colortextbutton-color, #5f6368);
     border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 16px;
     cursor: pointer;
     margin-left: 4px;
     z-index: 1001;
     position: relative;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    font-weight: 500;
-    min-width: 60px;
-    height: 28px;
+    font-weight: 400;
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     vertical-align: middle;
+    transition: background-color 0.2s ease;
   `;
 
-  // Try to use the extension icon if available, otherwise use text
-  const iconUrl = chrome.runtime?.getURL?.('img/save.png');
-  if (iconUrl) {
-    button.innerHTML = `
-      <img src="${iconUrl}" style="width: 16px; height: 16px;" />
-    `;
-  } else {
-    // Fallback to text with download symbol only
-    button.innerHTML = '⬇️';
-  }
+  // Use text symbol instead of image for better compatibility
+  button.innerHTML = '↓↓'; // Two side-by-side down arrows (emphasizes "multiple files")
 
   button.title = 'Download All Attachments from this Email';
 
@@ -142,11 +134,14 @@ function addDownloadAllButton(driveButton, emailContainer) {
   });
 
   button.addEventListener('mouseover', () => {
-    button.style.background = '#1557b0';
+    // Darken the symbol on hover like Gmail buttons
+    button.style.background = 'var(--gm-fillcolorprimarycontainer-color, rgba(66, 133, 244, 0.08))';
+    button.style.color = 'var(--gm-colortextbutton-color-hover, #202124)';
   });
 
   button.addEventListener('mouseout', () => {
-    button.style.background = '#1a73e8';
+    button.style.background = 'transparent';
+    button.style.color = 'var(--gm-colortextbutton-color, #5f6368)';
   });
 
   // Insert the download button right after the "Add all to Drive" button
@@ -156,12 +151,12 @@ function addDownloadAllButton(driveButton, emailContainer) {
     parentContainer.appendChild(button);
   }
 
-  console.log('Added download button next to "Add all to Drive" button in email:', emailContainer);
+  // console.log('Added download button next to "Add all to Drive" button in email:', emailContainer);
 }
 
 // Function to download all attachments in a specific email
 function downloadAllAttachmentsInEmail(emailContainer) {
-  console.log('Downloading all attachments in specific email:', emailContainer);
+  // console.log('Downloading all attachments in specific email:', emailContainer);
 
   // Look for download links specifically within this email container
   const downloadSelectors = [
@@ -186,24 +181,24 @@ function downloadAllAttachmentsInEmail(emailContainer) {
   // Remove duplicates
   const uniqueLinks = [...new Set(allDownloadLinks)];
 
-  console.log(`Found ${uniqueLinks.length} potential download links in this email:`, uniqueLinks);
+  // console.log(`Found ${uniqueLinks.length} potential download links in this email:`, uniqueLinks);
 
   let downloadCount = 0;
 
   uniqueLinks.forEach((link, index) => {
     setTimeout(() => {
-      console.log(`Processing link ${index + 1}:`, link);
+      // console.log(`Processing link ${index + 1}:`, link);
 
       if (link.href && link.href.startsWith('http')) {
         // Direct download link - handle all files with new tab and special PDF handling
-        console.log('Downloading via URL:', link.href);
+        // console.log('Downloading via URL:', link.href);
 
         // Use our enhanced downloadAttachment function for all files
         downloadAttachment(link.href);
         downloadCount++;
       } else if (link.click && typeof link.click === 'function') {
         // Clickable element - get URL and handle properly
-        console.log('Clicking download element:', link);
+        // console.log('Clicking download element:', link);
         try {
           if (link.href) {
             // If we have a URL, use our download function
@@ -220,11 +215,11 @@ function downloadAllAttachmentsInEmail(emailContainer) {
           }
           downloadCount++;
         } catch (e) {
-          console.error('Failed to click element:', e);
+          // console.error('Failed to click element:', e);
         }
       } else if (link.getAttribute('data-tooltip')?.includes('Download')) {
         // Try to trigger download by simulating click with new tab
-        console.log('Simulating click on tooltip element:', link);
+        // console.log('Simulating click on tooltip element:', link);
         try {
           // Set target to new tab before clicking
           const originalTarget = link.target;
@@ -237,16 +232,16 @@ function downloadAllAttachmentsInEmail(emailContainer) {
           }
           downloadCount++;
         } catch (e) {
-          console.error('Failed to simulate click:', e);
+          // console.error('Failed to simulate click:', e);
         }
       }
     }, index * 300); // Delay to avoid overwhelming Gmail
   });
 
   setTimeout(() => {
-    console.log(`Initiated download of ${downloadCount} attachments from this email`);
+    // console.log(`Initiated download of ${downloadCount} attachments from this email`);
     if (downloadCount === 0) {
-      console.log('No downloads initiated. Trying alternative method...');
+      // console.log('No downloads initiated. Trying alternative method...');
       tryAlternativeDownloadMethod(emailContainer);
     }
   }, uniqueLinks.length * 300 + 100);
@@ -254,7 +249,7 @@ function downloadAllAttachmentsInEmail(emailContainer) {
 
 // Alternative download method if primary method fails
 function tryAlternativeDownloadMethod(container) {
-  console.log('Trying alternative download method...');
+  // console.log('Trying alternative download method...');
 
   // Look for any clickable elements that might be downloads
   const potentialDownloads = container.querySelectorAll('*[onclick], button, [role="button"], a');
@@ -266,11 +261,11 @@ function tryAlternativeDownloadMethod(container) {
 
     if (text.includes('download') || tooltip.includes('download') || ariaLabel.includes('download') ||
         text.includes('save') || tooltip.includes('save') || ariaLabel.includes('save')) {
-      console.log('Found potential download element:', element);
+      // console.log('Found potential download element:', element);
       try {
         element.click();
       } catch (e) {
-        console.error('Failed to click potential download:', e);
+        // console.error('Failed to click potential download:', e);
       }
     }
   });
@@ -279,9 +274,9 @@ function tryAlternativeDownloadMethod(container) {
 // Initialize the extension with conversation-specific monitoring
 async function initExtension() {
   try {
-    console.log('Waiting for Gmail to load...');
+    // console.log('Waiting for Gmail to load...');
     await waitForGmail();
-    console.log('Gmail loaded, initializing extension...');
+    // console.log('Gmail loaded, initializing extension...');
 
     // Debounced version to prevent excessive calls
     const debouncedAddButtons = debounce(addDownloadButtons, 500);
@@ -289,7 +284,7 @@ async function initExtension() {
     // Function to check if a conversation is currently open
     function checkForConversationView() {
       if (isInConversationView()) {
-        console.log('Conversation view detected, adding download buttons...');
+        // console.log('Conversation view detected, adding download buttons...');
         setTimeout(debouncedAddButtons, 1000); // Short delay to let Gmail render
       }
     }
@@ -316,7 +311,7 @@ async function initExtension() {
       });
 
       if (hasSignificantChange) {
-        console.log('Detected conversation-related changes');
+        // console.log('Detected conversation-related changes');
         checkForConversationView();
       }
     });
@@ -338,15 +333,15 @@ async function initExtension() {
     setInterval(() => {
       if (window.location.href !== currentUrl) {
         currentUrl = window.location.href;
-        console.log('URL changed, checking for conversation view...');
+        // console.log('URL changed, checking for conversation view...');
         setTimeout(checkForConversationView, 500);
       }
     }, 1000);
 
-    console.log('Gmail Attachment Downloader initialized successfully!');
+    // console.log('Gmail Attachment Downloader initialized successfully!');
 
   } catch (error) {
-    console.error('Extension initialization failed:', error);
+    // console.error('Extension initialization failed:', error);
   }
 }
 

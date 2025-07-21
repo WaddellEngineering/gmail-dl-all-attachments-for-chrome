@@ -27,6 +27,4 @@ Original idea of [Stéphane](https://github.com/St3ph-fr)
 
 ## Next features
 
--   Fix icon to match Gmail styling
-
 Don't hesitate to submit new features or bugs by posting an issue on this project.
