@@ -1,54 +1,32 @@
-Better download all for Gmail™ [![PayPal donation][2]][1] 
-==============================
+# Better download all for Gmail™
 
-  [1]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=32GZMQ9WUGF2N&lc=GB&item_name=Better%20download%20all%20attachments%20for%20Gmail%e2%84%a2&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted
-  [2]: https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif (PayPal donation)
-
-Purpose
--------
+## Purpose
 
 This is a google chrome extension. It permits you to download all files attached in a mail or a conversation without downloading the archive created automatically by Gmail. Now, you can also download all the attachments in the conversation!
 
-How to install?
----------------
+## How to install?
 
-Add to chrome the extension available here: https://chrome.google.com/webstore/detail/better-download-all-attac/eehnjaacbphnfgipdcfeaepafihfhnkm 
+1. Download code as .zip and extract
+2. Go to chrome://extensions/
+3. Turn on developer mode
+4. Click "Load unpacked"
+5. Find downloaded and extracted code folder, Click OK
+6. Restart Gmail
 
-Usage
------
+## Usage
 
-1) Download all attachments from a mail
+1. Navigate to email in conversation and click "Download All Attachments from this Email"
 
-![Better download all screenshot](https://puu.sh/klAYz.jpg)
+## About
 
-2) Download all attachments from a thread (conversation)
-
-![Better download all screenshot conversation](https://puu.sh/uEKQ2.png)
-
-Just click on the icon ![Better download all icon](https://puu.sh/klB1I.png)
-
-About
------
+2025: Updated for Manifest v3 by Sam (https://github.com/WaddellEngineering)
 
 Developed by [medric](https://github.com/medric) && [mlazzje](https://github.com/mlazzje)
 
 Original idea of [Stéphane](https://github.com/St3ph-fr)
 
-Next features
------
+## Next features
 
-- Integrate on Google Inbox
-- Download all attachments for a search
+-   Fix icon to match Gmail styling
 
-Don't hesitate to submit a new feature by posting an issue on this project.
-
-Support me
------
-
-Pay me a pizza ;)
-
-*bitcoin:1HT3DQ9vjN5Sr2b4hptABJDW8QrMjen51V*
-
-*ethereum:0xA58C983a2FD04b9c1933c2C43bFF4513daC19840*
-
-
+Don't hesitate to submit new features or bugs by posting an issue on this project.
