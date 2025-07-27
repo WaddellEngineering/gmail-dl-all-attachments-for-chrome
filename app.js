@@ -127,10 +127,28 @@ function addDownloadAllButton(driveButton, emailContainer) {
 
   button.title = 'Download All Attachments from this Email';
 
+  // Add ARIA labels for accessibility
+  button.setAttribute('aria-label', 'Download All Attachments from this Email');
+  button.setAttribute('role', 'button');
+  button.setAttribute('tabindex', '0');
+  button.setAttribute('data-extension-button', 'true'); // Mark as our extension button
+
   button.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Add a flag to prevent infinite loops
+    if (button.dataset.downloading === 'true') {
+      return; // Already processing, prevent multiple clicks
+    }
+
+    button.dataset.downloading = 'true';
     downloadAllAttachmentsInEmail(emailContainer);
+
+    // Reset the flag after a delay
+    setTimeout(() => {
+      button.dataset.downloading = 'false';
+    }, 2000);
   });
 
   button.addEventListener('mouseover', () => {
@@ -160,15 +178,15 @@ function downloadAllAttachmentsInEmail(emailContainer) {
 
   // Look for download links specifically within this email container
   const downloadSelectors = [
-    '[data-tooltip*="Download"]',
-    '[aria-label*="Download"]',
-    'a[download]',
-    'span[download]',
-    '[role="button"][aria-label*="attachment"]',
-    'a[href*="attachment"]',
-    'a[href*="mail-attachment.googleusercontent.com"]',
-    '.aZo a', // Gmail attachment links
-    '.aQH a', // Gmail attachment area links
+    '[data-tooltip*="Download"]:not(.download-all-btn)',
+    '[aria-label*="Download"]:not(.download-all-btn)',
+    'a[download]:not(.download-all-btn)',
+    'span[download]:not(.download-all-btn)',
+    '[role="button"][aria-label*="attachment"]:not(.download-all-btn)',
+    'a[href*="attachment"]:not(.download-all-btn)',
+    'a[href*="mail-attachment.googleusercontent.com"]:not(.download-all-btn)',
+    '.aZo a:not(.download-all-btn)', // Gmail attachment links
+    '.aQH a:not(.download-all-btn)', // Gmail attachment area links
   ];
 
   let allDownloadLinks = [];
@@ -252,12 +270,22 @@ function tryAlternativeDownloadMethod(container) {
   // console.log('Trying alternative download method...');
 
   // Look for any clickable elements that might be downloads
-  const potentialDownloads = container.querySelectorAll('*[onclick], button, [role="button"], a');
+  const potentialDownloads = container.querySelectorAll('*[onclick]:not(.download-all-btn):not([data-extension-button]), button:not(.download-all-btn):not([data-extension-button]), [role="button"]:not(.download-all-btn):not([data-extension-button]), a:not(.download-all-btn):not([data-extension-button])');
 
   potentialDownloads.forEach(element => {
+    // Skip our own download button (double check)
+    if (element.classList.contains('download-all-btn') || element.hasAttribute('data-extension-button')) {
+      return;
+    }
+
     const text = element.textContent?.toLowerCase() || '';
     const tooltip = element.getAttribute('data-tooltip')?.toLowerCase() || '';
     const ariaLabel = element.getAttribute('aria-label')?.toLowerCase() || '';
+
+    // Also skip if the element contains our specific aria-label
+    if (ariaLabel.includes('download all attachments from this email')) {
+      return;
+    }
 
     if (text.includes('download') || tooltip.includes('download') || ariaLabel.includes('download') ||
         text.includes('save') || tooltip.includes('save') || ariaLabel.includes('save')) {
