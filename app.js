@@ -322,16 +322,19 @@ async function initExtension() {
 
     // Watch for navigation changes that might open/close conversations
     const observer = new MutationObserver((mutations) => {
-      // Look for significant changes that indicate a conversation was opened
+      // Look for significant changes that indicate a conversation was opened or content changed
       const hasSignificantChange = mutations.some(mutation => {
         if (mutation.addedNodes.length > 0) {
           return Array.from(mutation.addedNodes).some(node => {
             if (node.nodeType === Node.ELEMENT_NODE) {
-              // Check if new nodes include conversation-related elements
-              return node.querySelector('[data-legacy-thread-id], [data-thread-id], [data-tooltip="Add all to Drive"]') ||
+              // Check if new nodes include conversation-related elements OR pagination changes
+              return node.querySelector('[data-legacy-thread-id], [data-thread-id], [data-tooltip="Add all to Drive"], .aeH, .ae4, .ii') ||
                      node.hasAttribute?.('data-legacy-thread-id') ||
                      node.hasAttribute?.('data-thread-id') ||
-                     node.getAttribute?.('data-tooltip') === 'Add all to Drive';
+                     node.getAttribute?.('data-tooltip') === 'Add all to Drive' ||
+                     node.classList?.contains('aeH') || // Gmail conversation list
+                     node.classList?.contains('ae4') || // Gmail email container
+                     node.classList?.contains('ii');   // Gmail message container
             }
           });
         }
@@ -340,7 +343,7 @@ async function initExtension() {
 
       if (hasSignificantChange) {
         // console.log('Detected conversation-related changes');
-        checkForConversationView();
+        setTimeout(checkForConversationView, 800); // Slightly longer delay for pagination
       }
     });
 
@@ -358,13 +361,29 @@ async function initExtension() {
 
     // Also listen for URL changes (Gmail is a SPA)
     let currentUrl = window.location.href;
+    let currentHash = window.location.hash;
+
     setInterval(() => {
-      if (window.location.href !== currentUrl) {
-        currentUrl = window.location.href;
-        // console.log('URL changed, checking for conversation view...');
-        setTimeout(checkForConversationView, 500);
+      const newUrl = window.location.href;
+      const newHash = window.location.hash;
+
+      if (newUrl !== currentUrl || newHash !== currentHash) {
+        currentUrl = newUrl;
+        currentHash = newHash;
+        // console.log('URL or hash changed, checking for conversation view...');
+        setTimeout(checkForConversationView, 1200); // Longer delay for navigation
       }
-    }, 1000);
+    }, 500); // Check more frequently for navigation changes
+
+    // Also listen for Gmail's custom navigation events
+    window.addEventListener('popstate', () => {
+      setTimeout(checkForConversationView, 1000);
+    });
+
+    // Listen for hash changes (Gmail uses hash routing)
+    window.addEventListener('hashchange', () => {
+      setTimeout(checkForConversationView, 1000);
+    });
 
     // console.log('Gmail Attachment Downloader initialized successfully!');
 
