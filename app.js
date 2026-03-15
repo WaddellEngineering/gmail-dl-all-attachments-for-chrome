@@ -50,7 +50,7 @@ function isInConversationView() {
 
     // console.log("Conversation view indicators:", indicators);
 
-    console.log("Conversation view indicators:", indicators);
+    // console.log("Conversation view indicators:", indicators);
 
     return (
         indicators.legacyThread ||
@@ -481,7 +481,7 @@ async function initExtension() {
 
         // console.log("Gmail Attachment Downloader initialized successfully!");
     } catch (error) {
-        console.error("Extension initialization failed:", error);
+        // console.error("Extension initialization failed:", error);
     }
 }
 
